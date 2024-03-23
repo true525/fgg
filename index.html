@@ -3,54 +3,76 @@
 <head>
   <title>タップゲーム</title>
   <style>
-    #character {
-      width: 100px;
-      height: 100px;
+    #square {
+      width: 50px;
+      height: 50px;
       background-color: red;
-      border-radius: 50%;
       position: absolute;
     }
   </style>
 </head>
 <body>
-  <div id="character"></div>
-  <div id="score">Score: 0</div>
+  <div id="square"></div>
+  <div id="experience">経験値: 0</div>
+  <div id="timer">残り時間: 60秒</div>
 
   <script>
-    let score = 0;
-    const character = document.getElementById('character');
-    const scoreDisplay = document.getElementById('score');
+    let experience = 0;
+    let timeLeft = 60;
+    const square = document.getElementById('square');
+    const experienceDisplay = document.getElementById('experience');
+    const timerDisplay = document.getElementById('timer');
+    let gameInterval;
 
-    // キャラクターの初期位置をランダムに設定
-    character.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
-    character.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
+    // ゲームの開始
+    function startGame() {
+      gameInterval = setInterval(moveSquare, 500);
+      startTimer();
+    }
 
-    // タップイベントを処理する関数
+    // タイマーの開始
+    function startTimer() {
+      const timer = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `残り時間: ${timeLeft}秒`;
+        if (timeLeft === 0) {
+          clearInterval(timer);
+          clearInterval(gameInterval);
+          alert(`ゲーム終了！獲得した経験値は${experience}です。`);
+        }
+      }, 1000);
+    }
+
+    // 四角の移動
+    function moveSquare() {
+      square.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+      square.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+    }
+
+    // タップイベントの処理
     function handleTap(event) {
       const x = event.clientX;
       const y = event.clientY;
-      const characterX = character.offsetLeft;
-      const characterY = character.offsetTop;
-      const radius = 50; // キャラクターの半径
+      const squareX = square.offsetLeft;
+      const squareY = square.offsetTop;
 
-      // キャラクターがタップされたかどうかを判定
       if (
-        x >= characterX - radius &&
-        x <= characterX + radius &&
-        y >= characterY - radius &&
-        y <= characterY + radius
+        x >= squareX &&
+        x <= squareX + 50 &&
+        y >= squareY &&
+        y <= squareY + 50
       ) {
-        // キャラクターの新しい位置をランダムに設定
-        character.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
-        character.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
-        score++;
-        scoreDisplay.textContent = `Score: ${score}`;
+        experience += 10;
+        experienceDisplay.textContent = `経験値: ${experience}`;
       }
     }
 
-    // タップイベントを登録
+    // タップイベントの登録
     document.addEventListener('touchstart', handleTap, false);
     document.addEventListener('click', handleTap, false);
+
+    // ゲームの開始
+    startGame();
   </script>
 </body>
 </html>
