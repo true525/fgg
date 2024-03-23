@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
-<style>
-body {
-  background: url(./kowai.jpeg) center center / cover no-repeat fixed;
-}
-</style>
+<head>
+  <title>Tap Game</title>
+  <style>
+    .target {
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      position: absolute;
+    }
+  </style>
+</head>
 <body>
-  <script type="text/javascript">
-    index.open('index.html', null, 'width=1001,toolbar=yes,menubar=yes,scrollbars=yes');
+  <div class="target"></div>
+
+  <script>
+    // ターゲットの要素を取得
+    const target = document.querySelector('.target');
+
+    // ターゲットの初期位置をランダムに設定
+    target.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+    target.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+
+    // ターゲットがクリックされたときの処理
+    target.addEventListener('click', () => {
+      // ターゲットの位置をランダムに変更
+      target.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+      target.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+    });
   </script>
-  <script type="text/javascript">
-      index.open('index.html', null, 'width=1000,toolbar=yes,menubar=yes,scrollbars=yes');
- </script>
 </body>
 </html>
