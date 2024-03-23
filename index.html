@@ -1,33 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tap Game</title>
+  <title>タップゲーム</title>
   <style>
-    .target {
-      width: 50px;
-      height: 50px;
+    #character {
+      width: 100px;
+      height: 100px;
       background-color: red;
+      border-radius: 50%;
       position: absolute;
     }
   </style>
 </head>
 <body>
-  <div class="target"></div>
+  <div id="character"></div>
+  <div id="score">Score: 0</div>
 
   <script>
-    // ターゲットの要素を取得
-    const target = document.querySelector('.target');
+    let score = 0;
+    const character = document.getElementById('character');
+    const scoreDisplay = document.getElementById('score');
 
-    // ターゲットの初期位置をランダムに設定
-    target.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
-    target.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+    // キャラクターの初期位置をランダムに設定
+    character.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
+    character.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
 
-    // ターゲットがクリックされたときの処理
-    target.addEventListener('click', () => {
-      // ターゲットの位置をランダムに変更
-      target.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
-      target.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
-    });
+    // タップイベントを処理する関数
+    function handleTap(event) {
+      const x = event.clientX;
+      const y = event.clientY;
+      const characterX = character.offsetLeft;
+      const characterY = character.offsetTop;
+      const radius = 50; // キャラクターの半径
+
+      // キャラクターがタップされたかどうかを判定
+      if (
+        x >= characterX - radius &&
+        x <= characterX + radius &&
+        y >= characterY - radius &&
+        y <= characterY + radius
+      ) {
+        // キャラクターの新しい位置をランダムに設定
+        character.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
+        character.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+      }
+    }
+
+    // タップイベントを登録
+    document.addEventListener('touchstart', handleTap, false);
+    document.addEventListener('click', handleTap, false);
   </script>
 </body>
 </html>
