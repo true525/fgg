@@ -9,12 +9,18 @@
       background-color: red;
       position: absolute;
     }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+    }
   </style>
 </head>
 <body>
   <div id="square"></div>
   <div id="score">スコア: 0</div>
   <div id="timer">残り時間: 60秒</div>
+  <button id="startBtn">スタート</button>
+  <button id="stopBtn" disabled>ストップ</button>
 
   <script>
     let score = 0;
@@ -22,11 +28,16 @@
     const square = document.getElementById('square');
     const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
     let gameInterval;
     let moveInterval;
+    let timerInterval;
 
     // ゲームの開始
     function startGame() {
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
       moveInterval = setInterval(moveSquare, 500);
       gameInterval = setInterval(moveSquare, 500);
       startTimer();
@@ -34,16 +45,26 @@
 
     // タイマーの開始
     function startTimer() {
-      const timer = setInterval(() => {
+      timerInterval = setInterval(() => {
         timeLeft--;
         timerDisplay.textContent = `残り時間: ${timeLeft}秒`;
         if (timeLeft === 0) {
-          clearInterval(timer);
+          clearInterval(timerInterval);
           clearInterval(gameInterval);
           clearInterval(moveInterval);
+          stopGame();
           alert(`ゲーム終了！獲得したスコアは${score}です。`);
         }
       }, 1000);
+    }
+
+    // ゲームの停止
+    function stopGame() {
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      clearInterval(timerInterval);
+      clearInterval(gameInterval);
+      clearInterval(moveInterval);
     }
 
     // 四角の移動
@@ -74,8 +95,9 @@
     document.addEventListener('touchstart', handleTap, false);
     document.addEventListener('click', handleTap, false);
 
-    // ゲームの開始
-    startGame();
+    // ボタンのイベントリスナー
+    startBtn.addEventListener('click', startGame);
+    stopBtn.addEventListener('click', stopGame);
   </script>
 </body>
 </html>
