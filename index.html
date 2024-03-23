@@ -3,6 +3,11 @@
 <head>
   <title>タップゲーム</title>
   <style>
+    body {
+      background-image: url('https://source.unsplash.com/random/1920x1080');
+      background-size: cover;
+      background-position: center;
+    }
     #square {
       width: 50px;
       height: 50px;
@@ -12,6 +17,12 @@
     button {
       font-size: 16px;
       padding: 10px 20px;
+    }
+    #score, #timer, button {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-shadow: 1px 1px 2px black;
     }
   </style>
 </head>
@@ -86,7 +97,7 @@
         y >= squareY &&
         y <= squareY + 50
       ) {
-        score += 10;
+        score += 1;
         scoreDisplay.textContent = `スコア: ${score}`;
       }
     }
