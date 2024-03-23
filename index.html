@@ -13,19 +13,21 @@
 </head>
 <body>
   <div id="square"></div>
-  <div id="experience">経験値: 0</div>
+  <div id="score">スコア: 0</div>
   <div id="timer">残り時間: 60秒</div>
 
   <script>
-    let experience = 0;
+    let score = 0;
     let timeLeft = 60;
     const square = document.getElementById('square');
-    const experienceDisplay = document.getElementById('experience');
+    const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
     let gameInterval;
+    let moveInterval;
 
     // ゲームの開始
     function startGame() {
+      moveInterval = setInterval(moveSquare, 500);
       gameInterval = setInterval(moveSquare, 500);
       startTimer();
     }
@@ -38,7 +40,8 @@
         if (timeLeft === 0) {
           clearInterval(timer);
           clearInterval(gameInterval);
-          alert(`ゲーム終了！獲得した経験値は${experience}です。`);
+          clearInterval(moveInterval);
+          alert(`ゲーム終了！獲得したスコアは${score}です。`);
         }
       }, 1000);
     }
@@ -62,8 +65,8 @@
         y >= squareY &&
         y <= squareY + 50
       ) {
-        experience += 10;
-        experienceDisplay.textContent = `経験値: ${experience}`;
+        score += 10;
+        scoreDisplay.textContent = `スコア: ${score}`;
       }
     }
 
